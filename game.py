@@ -23,6 +23,33 @@ def random_predict(number: int = 1) -> int:
             break  # выход из цикла если угадали
     return count
 
+def number_predict(number: int = 1) -> int:
+    """Угадываем число последовательным разбиением интервала на 2
+
+    Args:
+        number (int, optional): Загаданное число. Defaults to 1.
+
+    Returns:
+        int: Число попыток
+    """ 
+    
+    count = 0
+    predict_number = 0
+    min_num = 1
+    max_num = 101 
+
+    while True:
+        count += 1
+        predict_number = min_num + ((max_num - min_num) // 2)
+        if number == predict_number:
+            break  # выход из цикла если угадали
+        elif number > predict_number:
+            min_num = predict_number
+        else:
+            max_num = predict_number
+    return count
+
+
 
 def score_game(random_predict) -> int:
     """За какое количство попыток в среднем за 1000 подходов угадывает наш алгоритм
@@ -38,7 +65,7 @@ def score_game(random_predict) -> int:
     random_array = np.random.randint(1, 101, size=(1000))  # загадали список чисел
 
     for number in random_array:
-        count_ls.append(random_predict(number))
+        count_ls.append(number_predict(number))
 
     score = int(np.mean(count_ls))
     print(f"Ваш алгоритм угадывает число в среднем за:{score} попыток")
