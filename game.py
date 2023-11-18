@@ -5,20 +5,22 @@
 import numpy as np
 
 
-def number_predict(number: int = 1) -> int:
+def number_predict(number: int = 1, min_num: int = 1, max_num: int = 101) -> int:
     """Угадываем число последовательным разбиением интервала на 2
 
     Args:
         number (int, optional): Загаданное число. Defaults to 1.
+        min_num (int, optional): Нижняя граница диапазона загадываемых чисел. Defaults to 1.
+        max_num (int, optional): Верхняя граница диапазона загадываемых чисел. Defaults to 101.
 
     Returns:
         int: Число попыток
     """
 
+    # number of guesses
     count = 0
+    # current guess value
     predict_number = 0
-    min_num = 1
-    max_num = 101
 
     while True:
         count += 1
@@ -32,11 +34,14 @@ def number_predict(number: int = 1) -> int:
     return count
 
 
-def score_game(func) -> int:
-    """Какое количество попыток нужно алгоритму для угадывания числа в среднем за 1000 попыток
+def score_game(guess_func, min_num: int = 1, max_num: int = 101, num_iter: int = 1000) -> int:
+    """Какое количество попыток нужно алгоритму для угадывания числа в среднем за num_iter попыток
 
     Args:
         number_predict ([type]): функция угадывания
+        min_num (int, optional): Нижняя граница диапазона загадываемых чисел
+        max_num (int, optional): Верхняя граница диапазона загадываемых чисел
+        num_iter (int, optional): Количество попыток
 
     Returns:
         int: среднее количество попыток
@@ -44,10 +49,10 @@ def score_game(func) -> int:
     count_ls = []
     # np.random.seed(1)  # фиксируем сид для воспроизводимости
     random_array = np.random.randint(
-        1, 101, size=1000)  # загадали список чисел
+        min_num, max_num, size=num_iter)  # загадали список чисел
 
     for number in random_array:
-        count_ls.append(func(number))
+        count_ls.append(guess_func(number, min_num, max_num))
 
     score = int(np.mean(count_ls))
     print(f"Ваш алгоритм угадывает число в среднем за:{score} попыток")
