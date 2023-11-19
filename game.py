@@ -22,11 +22,15 @@ def number_predict(number: int = 1, min_num: int = 1, max_num: int = 101) -> int
     # current guess value
     predict_number = 0
 
+    # divide min-max interval by 2
     while True:
+        # count guesses
         count += 1
+        # predict number as a middle of min-max interval
         predict_number = min_num + ((max_num - min_num) // 2)
         if number == predict_number:
-            break  # выход из цикла если угадали
+            break  # exit loop if number guessed succesfully
+        # change min-max interval
         if number > predict_number:
             min_num = predict_number + 1
         else:
